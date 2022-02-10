@@ -1,39 +1,44 @@
-import { SortingDirection, swap } from "./SortingOptions";
+import { SortingDirection, swap, reverse } from './SortingOptions';
 
-function sort(input: Array<number>, direction: SortingDirection, low?: number, high?: number): void {
-  if(!low) {
-    low = 0;
-  }
-  if(!high) {
-    high = input.length - 1;
-  }
+// https://www.guru99.com/quicksort-in-javascript.html
+function sort(input: Array<number>, left: number, right: number): void {
+	if (input.length > 1) {
+		let index = divide(input, left, right);
 
-  if(low < high) {
-    let part = partition(input, direction, low, high);
-    sort(input, direction, low, part - 1);
-    sort(input, direction, part + 1, high);
-  }
+		if (left < index - 1) {
+			sort(input, left, index - 1);
+		}
+		if (index < right) {
+			sort(input, index, right);
+		}
+	}
 }
 
-function partition(input: Array<number>, direction: SortingDirection, low: number, high: number): number {
+function divide(input: Array<number>, left: number, right: number): number {
+	let pivot = input[Math.floor((right + left) / 2)],
+		i = left,
+		j = right;
 
-  let pivot = input[high];
-  let i = low - 1;
-
-  const check = direction === 'ASC' ?
-    (index) => input[index] <= pivot : (index) => input[index] >= pivot;
-
-  for(let j = low; j < high; j++) {
-    if(check(j)) {
-      i++;
-
-      swap(input, i, j);
-    }
-  }
-  i++;
-  swap(input, i, high);
-
-  return i;
+	while (i <= j) {
+		while (input[i] < pivot) {
+			i++;
+		}
+		while (input[j] > pivot) {
+			j--;
+		}
+		if (i <= j) {
+			swap(input, i, j);
+			i++;
+			j--;
+		}
+	}
+	return i;
 }
 
-export default (input: Array<number>, direction: SortingDirection) => sort(input, direction);
+export default (input: Array<number>, direction: SortingDirection) => {
+	sort(input, 0, input.length - 1);
+
+	if (direction === 'DESC') {
+		reverse(input);
+	}
+};
