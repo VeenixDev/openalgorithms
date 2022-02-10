@@ -15,7 +15,7 @@
 		"type": "git",
 		"url": "git@github.com:VeenixDev/openalgorithms.git"
 	},
-	"author": "VeenixDev",
+	"author": "Paul Schmeing",
 	"license": "BSL-1.0",
 	"devDependencies": {
 		"@types/jest": "^27.4.0",
